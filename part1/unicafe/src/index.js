@@ -16,12 +16,25 @@ const Button = ({name, handler}) => {
 }
 
 const Statistics = ({good, neutral, bad}) => {
+	const average = () => {
+		const result = (good*1 + neutral*0 + bad*-1) / (good + neutral + bad)
+		return result ? result : 0
+	}
+
+	const positive = () => {
+		const result = good / (good + neutral + bad)
+		return result ? result : 0
+	}
+
 	return (
 		<div>
 			<h2>statistics</h2>
 			<p>good {good}</p>
 			<p>neutral {neutral}</p>
 			<p>bad {bad}</p>
+			<p>all {good + neutral + bad}</p>
+			<p>average {average()}</p>
+			<p>positive {positive()} %</p>
 		</div>
 	)
 }
