@@ -6,7 +6,7 @@ import CountryList from './CountryList/CountryList'
 
 const App = () => {
 	const [countries, setCountries] = useState([])
-	const [search, setSearch] = useState('')
+	const [search, setSearch] = useState('sw')
 	useEffect(() => {
 		axios.get('https://restcountries.eu/rest/v2/all')
 			.then(response => {
@@ -14,10 +14,15 @@ const App = () => {
 			})
 	}, [])
 
+	const showCountry = (country) => () => {
+		setSearch(country)
+	}
+
+
 	return (
 		<div>
 			<SearchBox search={search} setSearch={setSearch}/>
-			<CountryList countries={countries} filter={search} />
+			<CountryList countries={countries} filter={search} showCountry={showCountry} />
 		</div>
 	)
 }

@@ -17,13 +17,16 @@ const CountryDetail = ({country}) => {
 	)
 }
 
-const CountrySimple = ({country}) => {
+const CountrySimple = ({country, showCountry}) => {
 	return (
-		<div>{country.name}</div>
+		<div>
+			{country.name}
+			<button onClick={showCountry(country.name)}>show</button>
+		</div>
 	)
 }
 
-const CountryList = ({countries, filter}) => {
+const CountryList = ({countries, filter, showCountry}) => {
 	const filteredCountries = countries.filter(country => {
 		return country.name.toLowerCase().includes(filter.toLowerCase())
 	})
@@ -40,7 +43,7 @@ const CountryList = ({countries, filter}) => {
 		return (
 			<div>
 				{filteredCountries.map((country, i) =>
-					<CountrySimple key={i} country={country} />
+					<CountrySimple key={i} country={country} showCountry={showCountry}/>
 				)}
 			</div>
 		)
