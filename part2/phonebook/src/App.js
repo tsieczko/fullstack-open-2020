@@ -45,6 +45,16 @@ const App = () => {
 		}
 	}
 
+	const deletePerson = (targetPerson) => (event) => {
+		event.preventDefault()
+		if (window.confirm(`Delete ${targetPerson.name}?`)) {
+			AppService.deletePerson(targetPerson)
+				.then(() => {
+					setPersons(persons.filter(person => person !== targetPerson))
+				})
+		}
+	}
+
 	return (
 		<div>
 			<h2>Phonebook</h2>
@@ -54,7 +64,10 @@ const App = () => {
 				newNumber={newNumber} handleNewNumberChange={handleNewNumberChange}
 				addPerson={addPerson}
 			/>
-			<Persons persons={persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))}/>
+			<Persons
+				persons={persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))}
+				deletePerson={deletePerson}
+			/>
 		</div>
 	)
 }
