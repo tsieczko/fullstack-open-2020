@@ -28,6 +28,17 @@ app.get('/api/persons', (request, response) => {
 	response.json(persons)
 })
 
+app.get('/api/persons/:id', (request, response) => {
+	const id = request.params.id
+	const foundPerson = persons.find(person => person.id == id)
+	console.log(foundPerson);
+	if (foundPerson) {
+		response.json(foundPerson)
+	} else {
+		response.status(404).end()
+	}
+})
+
 app.get('/info', (request, response) => {
 	response.send(
 		'<p>Phonebook has info for 4 people</p>' +
