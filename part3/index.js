@@ -50,13 +50,6 @@ let persons = [
 app.get('/api/persons', (request, response) => {
 	Person.find({})
 		.then(result => {
-			result = result.map(person => {
-				return {
-					id: person._id,
-					name: person.name,
-					number: person.number
-				}
-			})
 			response.json(result)
 		})
 })
@@ -64,12 +57,7 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:id', (request, response) => {
 	Person.findById(request.params.id)
 		.then(person => {
-			console.log(person);
-			response.json({
-				id: person._id,
-				name: person.name,
-				number: person.number
-			})
+			response.json(person)
 		})
 		.catch(error => {
 			console.log(error)
@@ -93,25 +81,15 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-	const newPerson = request.body
-	if (!newPerson.name) {
-		return response.status(400).json({
-			error: 'name missing'
+	const body = request.body;
+	person = new Person({
+		name: body.name,
+		number: body.number
+	})
+	person.save()
+		.then(result => {
+			response.json(result)
 		})
-	}
-	if (!newPerson.number) {
-		return response.status(400).json({
-			error: 'number missing'
-		})
-	}
-	if (persons.some(person => person.name == newPerson.name)) {
-		return response.status(400).json({
-			error: 'person already exists'
-		})
-	}
-	newPerson.id = Math.floor(Math.random() * 10000 + 1)
-	persons = persons.concat(newPerson)
-	response.json(newPerson)
 })
 
 const PORT = process.env.PORT || 3001
