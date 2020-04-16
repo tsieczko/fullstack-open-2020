@@ -42,10 +42,13 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.get('/info', (request, response, next) => {
-	response.send(
-		'<p>Phonebook has info for 4 people</p>' +
-		`<p>${new Date()}</p>`
-	)
+	Person.find({})
+	.then(result => {
+			response.send(
+				`<p>Phonebook has info for ${result.length} people</p>` +
+				`<p>${new Date()}</p>`
+			)
+		})
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
