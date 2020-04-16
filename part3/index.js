@@ -1,8 +1,12 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const Person = require('./models/person')
 
 const app = express()
 app.use(express.json())
+app.use(express.static('build'))
+
 morgan.token('body', (req, res) => {
 	return JSON.stringify(req.body)
 })
@@ -18,7 +22,6 @@ app.use(morgan((tokens, req, res) => {
 		tokens.body(req, res)
 	].join(' ')
 }))
-app.use(express.static('build'))
 
 
 let persons = [
@@ -45,18 +48,33 @@ let persons = [
 ]
 
 app.get('/api/persons', (request, response) => {
-	response.json(persons)
+	Person.find({})
+		.then(result => {
+			result = result.map(person => {
+				return {
+					id: person._id,
+					name: person.name,
+					number: person.number
+				}
+			})
+			response.json(result)
+		})
 })
 
 app.get('/api/persons/:id', (request, response) => {
-	const id = request.params.id
-	const foundPerson = persons.find(person => person.id == id)
-	console.log(foundPerson);
-	if (foundPerson) {
-		response.json(foundPerson)
-	} else {
-		response.status(404).end()
-	}
+	Person.findById(request.params.id)
+		.then(person => {
+			console.log(person);
+			response.json({
+				id: person._id,
+				name: person.name,
+				number: person.number
+			})
+		})
+		.catch(error => {
+			console.log(error)
+			response.status(404).end()
+		})
 })
 
 app.get('/info', (request, response) => {
