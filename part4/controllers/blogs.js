@@ -16,15 +16,14 @@ blogsRouter.get('/', (request, response) => {
 blogsRouter.post('/', (request, response) => {
 	const blog = new Blog(request.body)
 
-	blog
-	.save()
-	.then(result => {
-		response.status(201).json(result)
-	})
-	.catch(error => {
-		logger.error('Error in post', error)
-		response.status(404).end()
-	})
+	blog.save()
+		.then(result => {
+			response.status(201).json(result)
+		})
+		.catch(error => {
+			logger.error('Error in post', error)
+			response.status(404).end()
+		})
 })
 
 module.exports = blogsRouter
