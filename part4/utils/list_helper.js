@@ -32,7 +32,7 @@ const mostBlogs = (blogs) => {
 	if (blogs.length == 0) {
 		return {}
 	}
-	
+
 	const authorBlogMap = {}
 
 	blogs.forEach(blog => {
@@ -58,9 +58,40 @@ const mostBlogs = (blogs) => {
 	}
 }
 
+const mostLikes = (blogs) => {
+	if (blogs.length == 0) {
+		return {}
+	}
+
+	const authorLikesMap = {}
+
+	blogs.forEach(blog => {
+		if (authorLikesMap[blog.author]) {
+			authorLikesMap[blog.author] += blog.likes
+		} else {
+			authorLikesMap[blog.author] = blog.likes
+		}
+
+	})
+
+	const topAuthor = Object.keys(authorLikesMap).reduce((acc, cur) => {
+		if (authorLikesMap[acc] < authorLikesMap[cur]) {
+			return cur
+		} else {
+			return acc
+		}
+	})
+
+	return {
+		author: topAuthor,
+		likes: authorLikesMap[topAuthor]
+	}
+}
+
 module.exports = {
 	dummy,
 	totalLikes,
 	favoriteBlog,
-	mostBlogs
+	mostBlogs,
+	mostLikes
 }
