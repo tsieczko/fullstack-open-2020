@@ -55,3 +55,29 @@ describe('favorite blog', () => {
 		).toEqual(testBlogs[2])
 	})
 })
+
+describe('most blogs', () => {
+	test('when list is empty', () => {
+		expect(
+			listHelper.mostBlogs([])
+		).toEqual({})
+	})
+
+	test('when list has one element', () => {
+		expect(
+			listHelper.mostBlogs([testBlogs[0]])
+		).toEqual({
+			author: 'Michael Chan',
+			blogs: 1
+		})
+	})
+
+	test('when list has many elements', () => {
+		expect(
+			listHelper.mostBlogs(testBlogs)
+		).toEqual({
+			author: 'Robert C. Martin',
+			blogs: 3
+		})
+	})
+})
